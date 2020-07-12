@@ -63,5 +63,97 @@ namespace LYSL.Services.PetService
         {
             return _db.Pets.ToList();
         }
+
+        public ServiceResponse<Pet> DeletePetById(Pet pet)
+        {
+            try
+            {
+                _db.Pets.Remove(pet);
+                _db.SaveChanges();
+
+                return new ServiceResponse<Pet>
+                {
+                    Data = null,
+                    IsSuccess = true,
+                    Messsage = "Pet data is deleted",
+                    Time = DateTime.UtcNow
+                };
+            }
+            catch (Exception)
+            {
+                return new ServiceResponse<Pet>
+                {
+                    Data = null,
+                    IsSuccess = false,
+                    Messsage = "Error in deleting pet",
+                    Time = DateTime.UtcNow
+                };
+            }
+        }
+
+        public ServiceResponse<Pet> DeletePetById(int id)
+        {
+            try
+            {
+                var pet = GetPetById(id);
+                _db.Remove(pet);
+                _db.SaveChanges();
+                return new ServiceResponse<Pet>
+                {
+                    Data = null,
+                    IsSuccess = true,
+                    Messsage = "Pet data is deleted",
+                    Time = DateTime.UtcNow
+                };
+            }
+            catch (Exception e) 
+            {
+                return new ServiceResponse<Pet>
+                {
+                    Data = null,
+                    IsSuccess = false,
+                    Messsage = $"Error in deleting pet : {e}",
+                    Time = DateTime.UtcNow
+                };
+            }
+        }
+
+        public ServiceResponse<Pet> UpdatePet(Pet pet)
+        {
+            try
+            {
+                var newPet = new Pet
+                {
+                    //Id = pet.Id,
+                    Age = pet.Age,
+                    Breed = pet.Breed,
+                    IsNeutralized = pet.IsNeutralized,
+                    SerialNumber = pet.SerialNumber,
+                    Size = pet.Size,
+                    User = pet.User
+                };
+
+                _db.Pets.Update(newPet);
+                _db.SaveChanges();
+
+                return new ServiceResponse<Pet>
+                {
+                    Data = pet,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Pet updated",
+                    IsSuccess = true
+                };
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<Pet>
+                {
+                    Data = pet,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Error in updating pet",
+                    IsSuccess = false
+                };
+            }
+        }
     }
 }

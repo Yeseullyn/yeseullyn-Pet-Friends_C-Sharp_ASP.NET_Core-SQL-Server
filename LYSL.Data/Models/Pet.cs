@@ -7,6 +7,7 @@ namespace LYSL.Data.Models
 {
     public class Pet
     {
+        [Key]
         public int Id { get; set; }
         public string Breed { get; set; }
         public int Size { get; set; }
