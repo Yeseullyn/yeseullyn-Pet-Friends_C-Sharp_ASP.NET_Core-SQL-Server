@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\LYSL.Web"
   ],
+  "SelectedNode": "\\LYSL.Web\\appsettings.Development.json",
   "PreviewInSolutionExplorer": false
 }

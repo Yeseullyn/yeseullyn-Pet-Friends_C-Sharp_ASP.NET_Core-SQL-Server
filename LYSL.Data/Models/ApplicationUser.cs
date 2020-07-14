@@ -15,6 +15,7 @@ namespace LYSL.Data.Models
 
         // List 사용법 단순공부X 숙지 (언제든 쓸수 있게)
         // Generic T 란 문엇일까? 어떻게 쓰는걸까? 숙지!
+        public Location location { get; set; }
         public List<Pet> Pets { get; set; }
     }
 }
