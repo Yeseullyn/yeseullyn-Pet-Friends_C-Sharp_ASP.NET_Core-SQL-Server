@@ -8,6 +8,10 @@ namespace LYSL.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        /// <summary>
+        ///상속받은 IdentityUser 클래스 안에 UserId에 해당하는 property 있는지 확인. 
+        ///들어갈때는 컨트롤 마우스 클릭으로
+        /// </summary>
         public int UserId { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }

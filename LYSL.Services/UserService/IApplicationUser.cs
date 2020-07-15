@@ -11,6 +11,7 @@ namespace LYSL.Services.UserService
         List<ApplicationUser> GetAllUsers();
         ApplicationUser GetUserById(int UserId);
 
+        //ById는 int id에 해당하니 네이밍을 다른것으로 해보도록
         ServiceResponse<ApplicationUser> DeleteUserById(ApplicationUser user);
         ServiceResponse<ApplicationUser> DeleteUserById(int UserId);
         ServiceResponse<ApplicationUser> CreateUser(ApplicationUser user);

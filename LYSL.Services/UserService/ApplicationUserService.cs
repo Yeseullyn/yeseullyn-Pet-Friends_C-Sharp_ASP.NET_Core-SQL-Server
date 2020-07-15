@@ -62,6 +62,12 @@ namespace LYSL.Services.UserService
             return _db.ApplicationUsers.ToList();
         }
 
+        /// <summary>
+        /// 네이밍을 유저로
+        /// 이것도 ById 지우기
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public ServiceResponse<ApplicationUser> DeletePetById(ApplicationUser user)
         {
             try
@@ -152,6 +158,7 @@ namespace LYSL.Services.UserService
               }
         }
 
+        // 딜리트 구현 해보시구요. 여기도 by id 되어있는거 이름고치기
         public ServiceResponse<ApplicationUser> DeleteUserById(ApplicationUser user)
         {
             throw new NotImplementedException();

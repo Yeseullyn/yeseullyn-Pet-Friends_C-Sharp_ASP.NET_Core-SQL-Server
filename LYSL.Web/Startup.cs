@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LYSL.Services.PetService;
+using LYSL.Services.UserService;
+using LYSL.Data.Models;
 
 namespace LYSL.Web
 {
