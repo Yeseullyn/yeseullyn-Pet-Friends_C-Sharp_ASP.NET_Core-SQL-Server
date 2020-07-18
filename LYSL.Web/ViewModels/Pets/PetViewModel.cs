@@ -1,23 +1,20 @@
-﻿using System;
+﻿using LYSL.Data.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace LYSL.Data.Models
+namespace LYSL.Web.ViewModels.Pets
 {
-    public class Pet
+    public class PetViewModel
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
         public string Breed { get; set; }
         public int Size { get; set; }
         public int Age { get; set; }
-        // Bool type이란?
         public bool IsNeutralized { get; set; }
         public string SerialNumber { get; set; }
 
-        //Foregin Key
         public virtual ApplicationUser User { get; set; }
     }
 }
