@@ -25,7 +25,7 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    location = user.location,
+                    Location = user.Location,
                     Pets = user.Pets
                 };
 
@@ -68,7 +68,7 @@ namespace LYSL.Services.UserService
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public ServiceResponse<ApplicationUser> DeletePetById(ApplicationUser user)
+        public ServiceResponse<ApplicationUser> DeleteApplicationUser(ApplicationUser user)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    location = user.location,
+                    Location = user.Location,
                     Pets = user.Pets
                 };
 
@@ -156,12 +156,6 @@ namespace LYSL.Services.UserService
                     IsSuccess = false
                   };
               }
-        }
-
-        // 딜리트 구현 해보시구요. 여기도 by id 되어있는거 이름고치기
-        public ServiceResponse<ApplicationUser> DeleteUserById(ApplicationUser user)
-        {
-            throw new NotImplementedException();
         }
     }
 }
