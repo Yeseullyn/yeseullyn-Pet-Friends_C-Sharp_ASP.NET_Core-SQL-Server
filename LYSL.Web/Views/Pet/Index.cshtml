@@ -1,0 +1,28 @@
+﻿@model LYSL.Web.ViewModels.Pets.PetListViewModel
+
+@{
+    ViewData["Title"] = "GetAllPet";
+}
+
+<h1>Pets in this Location</h1>
+
+<span>강아지 총 마릿수 : @Model.PetViewList.Count()</span>
+
+<br>
+
+@*LINQ*@
+
+@foreach (var pet in Model.PetViewList)
+{
+    <h3>@pet.Id</h3>
+    <ul>
+        <li>@pet.SerialNumber</li>
+        <li>@pet.Age</li>
+        <li>@pet.Location</li>
+        <li>@pet.Weight</li>
+        <li>@pet.Breed</li>
+        <li>@pet.IsNeutralized</li>
+        @*<li>@pet.Location.Latitude</li>*@
+        @*<li>@pet.Location.Longitude</li>*@
+    </ul>
+}

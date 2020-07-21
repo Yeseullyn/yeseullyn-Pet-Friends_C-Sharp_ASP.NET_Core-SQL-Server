@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace LYSL.Web.Controllers
@@ -24,23 +25,30 @@ namespace LYSL.Web.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public PetListViewModel GetAllPets()
         {
-            return View();
+            var petList = _pet.GetAllPets();
+
+            return new PetListViewModel
+            {
+                PetViewList = petList.Select(pet => new PetViewModel
+                {
+                    Id = pet.Id,
+                    Age = pet.Age,
+                    Location = pet.Location,
+                    Breed = pet.Breed,
+                    ApplicationUser = pet.User,
+                    IsNeutralized = pet.IsNeutralized,
+                    SerialNumber = pet.SerialNumber,
+                    Weight = pet.Weight
+                })
+            };
         }
 
-        [HttpGet("/pet")]
-        public IActionResult GetAllPets()
+        public IActionResult Index()
         {
-            var petVM = new List<PetViewModel>();
-            var pets = _pet.GetAllPets();
-
-            foreach(var pet in pets)
-            {
-                petVM.Add(_mapper.Map<PetViewModel>(pet));
-            }
-
-            return Ok(petVM);
+            var viewModel = GetAllPets();
+            return View(viewModel);
         }
 
         [HttpGet("/pet/{id}", Name = "GetPetById")]

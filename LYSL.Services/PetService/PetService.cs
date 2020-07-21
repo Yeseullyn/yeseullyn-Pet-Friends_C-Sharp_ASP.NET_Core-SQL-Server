@@ -83,7 +83,7 @@ namespace LYSL.Services.PetService
 
         public List<Pet> GetAllPets()
         {
-            return _db.Pets.ToList();
+            return _db.Pets.ToList(); 
         }
 
         public ServiceResponse<Pet> DeletePet(Pet pet)
