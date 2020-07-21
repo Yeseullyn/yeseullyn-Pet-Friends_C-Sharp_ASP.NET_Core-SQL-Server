@@ -19,12 +19,10 @@ namespace LYSL.Data.Models
         public DateTime CreatedOn { get; set; }
         public DateTime UpdateOn { get; set; }
 
-        [ForeignKey("Location")]
-        public int LocationId { get; set; }
 
         // List 사용법 단순공부X 숙지 (언제든 쓸수 있게)
         // Generic T 란 문엇일까? 어떻게 쓰는걸까? 숙지!
-        public virtual Location Location { get; set; }
+
         public virtual List<Pet> Pets { get; set; }
     }
 }

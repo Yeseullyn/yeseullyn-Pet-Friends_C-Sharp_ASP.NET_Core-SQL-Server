@@ -25,7 +25,6 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    Location = user.Location,
                     Pets = user.Pets
                 };
 
@@ -131,7 +130,6 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    Location = user.Location,
                     Pets = user.Pets
                 };
 

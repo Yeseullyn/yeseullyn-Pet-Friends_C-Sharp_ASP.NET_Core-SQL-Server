@@ -9,11 +9,10 @@ namespace LYSL.Data.Models
     public class Location
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        // Location time 있으면 좋을듯?
 
-        public virtual ApplicationUser applicationUser { get; set; }
+        public virtual Pet Pet { get; set; }
     }
 }

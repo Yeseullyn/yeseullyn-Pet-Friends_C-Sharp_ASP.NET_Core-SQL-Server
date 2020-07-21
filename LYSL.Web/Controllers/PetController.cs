@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using LYSL.Data.Models;
+using LYSL.Services;
 using LYSL.Services.PetService;
+using LYSL.Web.Models;
 using LYSL.Web.ViewModels.Pets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -43,20 +46,27 @@ namespace LYSL.Web.Controllers
         [HttpGet("/pet/{id}", Name = "GetPetById")]
         public IActionResult GetPetById(int id)
         {
-            var pet = _pet.GetPetById(id);
+            var pet = _pet.GetPetById(id).Data;
 
-            var model = new PetViewModel
+            if (pet != null)
             {
-                Id = pet.Id,
-                Age = pet.Age,
-                Breed = pet.Breed,
-                Size = pet.Size,
-                SerialNumber = pet.SerialNumber,
-                IsNeutralized = pet.IsNeutralized,
-                User = pet.User
-            };
-
-            return View(model);
+                var model = new PetViewModel
+                {
+                    Id = pet.Id,
+                    Age = pet.Age,
+                    Breed = pet.Breed,
+                    Weight = pet.Weight,
+                    SerialNumber = pet.SerialNumber,
+                    IsNeutralized = pet.IsNeutralized,
+                    ApplicationUser = pet.User,
+                    Location = pet.Location
+                };
+                return View(model);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("/pet/{id}", Name = "DeletePetById")]

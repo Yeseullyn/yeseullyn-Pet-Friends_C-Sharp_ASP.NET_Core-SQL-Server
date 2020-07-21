@@ -6,7 +6,7 @@ namespace LYSL.Services.PetService
     public interface IPetService
     {
         List<Pet> GetAllPets();
-        Pet GetPetById(int id);
+        ServiceResponse<Pet> GetPetById(int id);
 
         ServiceResponse<Pet> DeletePet(Pet pet);
         ServiceResponse<Pet> DeletePetById(int id);

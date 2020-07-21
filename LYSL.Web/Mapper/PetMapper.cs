@@ -18,6 +18,7 @@ namespace LYSL.Web.Mapper
         public bool IsNeutralized { get; set; }
         public string SerialNumber { get; set; }
 
+        public virtual Location Location { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
 }

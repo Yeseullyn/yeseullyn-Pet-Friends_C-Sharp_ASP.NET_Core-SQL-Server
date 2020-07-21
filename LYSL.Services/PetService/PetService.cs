@@ -27,7 +27,7 @@ namespace LYSL.Services.PetService
                     Breed = pet.Breed,
                     IsNeutralized = pet.IsNeutralized,
                     SerialNumber = pet.SerialNumber,
-                    Size = pet.Size,
+                    Weight = pet.Weight,
                     User = pet.User
                 };
 
@@ -54,9 +54,31 @@ namespace LYSL.Services.PetService
             }
         }
 
-        public Pet GetPetById(int id) 
+        public ServiceResponse<Pet> GetPetById(int id) 
         {
-            return _db.Pets.Find(id);
+            var pet = _db.Pets.Find(id);
+
+            try
+            {
+                return new ServiceResponse<Pet>
+                {
+                    Data = pet,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Get pet data success.",
+                    IsSuccess = false
+                };
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<Pet>
+                {
+                    Data = pet,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Get pet data failed.",
+                    IsSuccess = false
+                }; ;
+            }
+            
         }
 
         public List<Pet> GetAllPets()
@@ -129,7 +151,7 @@ namespace LYSL.Services.PetService
                     Breed = pet.Breed,
                     IsNeutralized = pet.IsNeutralized,
                     SerialNumber = pet.SerialNumber,
-                    Size = pet.Size,
+                    Weight = pet.Weight,
                     User = pet.User
                 };
 
