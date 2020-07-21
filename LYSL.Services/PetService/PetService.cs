@@ -64,7 +64,7 @@ namespace LYSL.Services.PetService
             return _db.Pets.ToList();
         }
 
-        public ServiceResponse<Pet> DeletePetById(Pet pet)
+        public ServiceResponse<Pet> DeletePet(Pet pet)
         {
             try
             {

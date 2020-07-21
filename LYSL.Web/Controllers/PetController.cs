@@ -1,7 +1,10 @@
-﻿using LYSL.Data.Models;
+﻿using AutoMapper;
+using LYSL.Data.Models;
 using LYSL.Services.PetService;
+using LYSL.Web.ViewModels.Pets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace LYSL.Web.Controllers
@@ -10,10 +13,12 @@ namespace LYSL.Web.Controllers
     public class PetController : Controller
     {
         private readonly IPetService _pet;
+        private readonly IMapper _mapper;
 
-        public PetController(IPetService pet)
+        public PetController(IPetService pet, IMapper mapper)
         {
             _pet = pet;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -24,9 +29,15 @@ namespace LYSL.Web.Controllers
         [HttpGet("/pet")]
         public IActionResult GetAllPets()
         {
+            var petVM = new List<PetViewModel>();
             var pets = _pet.GetAllPets();
 
-            return Ok(pets);
+            foreach(var pet in pets)
+            {
+                petVM.Add(_mapper.Map<PetViewModel>(pet));
+            }
+
+            return Ok(petVM);
         }
 
         [HttpGet("/pet/{id}", Name = "GetPetById")]
@@ -34,7 +45,18 @@ namespace LYSL.Web.Controllers
         {
             var pet = _pet.GetPetById(id);
 
-            return Ok(pet);
+            var model = new PetViewModel
+            {
+                Id = pet.Id,
+                Age = pet.Age,
+                Breed = pet.Breed,
+                Size = pet.Size,
+                SerialNumber = pet.SerialNumber,
+                IsNeutralized = pet.IsNeutralized,
+                User = pet.User
+            };
+
+            return View(model);
         }
 
         [HttpDelete("/pet/{id}", Name = "DeletePetById")]
@@ -51,6 +73,14 @@ namespace LYSL.Web.Controllers
             var updatedPet = _pet.UpdatePet(pet);
 
             return Ok(updatedPet);
+        }
+
+        [HttpPost("/pet")]
+        public IActionResult CreatePet([FromBody] Pet pet)
+        {
+            var createdPet = _pet.CreatePet(pet);
+
+            return Ok(createdPet);
         }
     }
 }

@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LYSL.Data", "..\LYSL.Data\LYSL.Data.csproj", "{74657F12-F991-4296-8B25-096E44A4FC94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LYSL.Web", "..\LYSL.Web\LYSL.Web.csproj", "{A371E69D-D8EA-453B-BDDF-418D22CD75FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LYSL.Web", "LYSL.Web.csproj", "{A371E69D-D8EA-453B-BDDF-418D22CD75FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LYSL.Services", "..\LYSL.Services\LYSL.Services.csproj", "{A419290D-2821-4EAE-89A2-D175BBFA4832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LYSL.Services", "..\LYSL.Services\LYSL.Services.csproj", "{A419290D-2821-4EAE-89A2-D175BBFA4832}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

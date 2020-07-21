@@ -8,7 +8,7 @@ namespace LYSL.Services.PetService
         List<Pet> GetAllPets();
         Pet GetPetById(int id);
 
-        ServiceResponse<Pet> DeletePetById(Pet pet);
+        ServiceResponse<Pet> DeletePet(Pet pet);
         ServiceResponse<Pet> DeletePetById(int id);
         ServiceResponse<Pet> CreatePet(Pet pet);
         ServiceResponse<Pet> UpdatePet(Pet pet);

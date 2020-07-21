@@ -7,8 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LYSL.Services.PetService;
-using LYSL.Services.UserService;
-using LYSL.Data.Models;
+using LYSL.Web.Mapper;
+using AutoMapper;
 
 namespace LYSL.Web
 {
@@ -29,7 +29,10 @@ namespace LYSL.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAutoMapper(typeof(PetMapper));
             services.AddScoped<IPetService, PetService>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddControllersWithViews()
