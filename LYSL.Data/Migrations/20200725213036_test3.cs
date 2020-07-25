@@ -2,39 +2,39 @@
 
 namespace LYSL.Data.Migrations
 {
-    public partial class addlocationvalueinpet : Migration
+    public partial class test3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_Location_LocationId",
-                table: "AspNetUsers");
+                name: "FK_Pet_Location_LocationId",
+                table: "Pet");
 
             migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_LocationId",
-                table: "AspNetUsers");
+                name: "IX_Pet_LocationId",
+                table: "Pet");
 
             migrationBuilder.DropColumn(
                 name: "LocationId",
-                table: "AspNetUsers");
+                table: "Pet");
 
             migrationBuilder.AddColumn<int>(
-                name: "LocationId",
-                table: "Pets",
+                name: "PetId",
+                table: "Location",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pets_LocationId",
-                table: "Pets",
-                column: "LocationId",
+                name: "IX_Location_PetId",
+                table: "Location",
+                column: "PetId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Pets_Location_LocationId",
-                table: "Pets",
-                column: "LocationId",
-                principalTable: "Location",
+                name: "FK_Location_Pet_PetId",
+                table: "Location",
+                column: "PetId",
+                principalTable: "Pet",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -42,33 +42,33 @@ namespace LYSL.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Pets_Location_LocationId",
-                table: "Pets");
+                name: "FK_Location_Pet_PetId",
+                table: "Location");
 
             migrationBuilder.DropIndex(
-                name: "IX_Pets_LocationId",
-                table: "Pets");
+                name: "IX_Location_PetId",
+                table: "Location");
 
             migrationBuilder.DropColumn(
-                name: "LocationId",
-                table: "Pets");
+                name: "PetId",
+                table: "Location");
 
             migrationBuilder.AddColumn<int>(
                 name: "LocationId",
-                table: "AspNetUsers",
+                table: "Pet",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_LocationId",
-                table: "AspNetUsers",
+                name: "IX_Pet_LocationId",
+                table: "Pet",
                 column: "LocationId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Location_LocationId",
-                table: "AspNetUsers",
+                name: "FK_Pet_Location_LocationId",
+                table: "Pet",
                 column: "LocationId",
                 principalTable: "Location",
                 principalColumn: "Id",

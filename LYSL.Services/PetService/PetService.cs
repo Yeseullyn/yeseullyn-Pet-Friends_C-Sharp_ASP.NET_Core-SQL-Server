@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LYSL.Services.PetService
+namespace LYSL.Services.Petervice
 {
-    public class PetService : IPetService
+    public class Petervice : IPetervice
     {
         private readonly ApplicationDbContext _db;
 
-        public PetService(ApplicationDbContext db)
+        public Petervice(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -31,12 +31,13 @@ namespace LYSL.Services.PetService
                     User = pet.User
                 };
 
-                _db.Pets.Add(newPet);
+                //var result = _db.Pet.Add(newPet);
+                _db.Pet.Add(newPet);
                 _db.SaveChanges();
 
                 return new ServiceResponse<Pet>
                 {
-                    Data = pet,
+                    Data = newPet,
                     Time = DateTime.UtcNow,
                     Messsage = "New pet added",
                     IsSuccess = true
@@ -56,7 +57,7 @@ namespace LYSL.Services.PetService
 
         public ServiceResponse<Pet> GetPetById(int id) 
         {
-            var pet = _db.Pets.Find(id);
+            var pet = _db.Pet.Find(id);
 
             try
             {
@@ -81,16 +82,16 @@ namespace LYSL.Services.PetService
             
         }
 
-        public List<Pet> GetAllPets()
+        public List<Pet> GetAllPet()
         {
-            return _db.Pets.ToList(); 
+            return _db.Pet.ToList();
         }
 
         public ServiceResponse<Pet> DeletePet(Pet pet)
         {
             try
             {
-                _db.Pets.Remove(pet);
+                _db.Pet.Remove(pet);
                 _db.SaveChanges();
 
                 return new ServiceResponse<Pet>
@@ -155,7 +156,7 @@ namespace LYSL.Services.PetService
                     User = pet.User
                 };
 
-                _db.Pets.Update(newPet);
+                _db.Pet.Update(newPet);
                 _db.SaveChanges();
 
                 return new ServiceResponse<Pet>

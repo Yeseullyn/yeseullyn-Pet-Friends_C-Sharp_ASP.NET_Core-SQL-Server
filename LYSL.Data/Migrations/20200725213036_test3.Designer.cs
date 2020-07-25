@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LYSL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200705024409_Model minor change")]
-    partial class Modelminorchange
+    [Migration("20200725213036_test3")]
+    partial class test3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,30 @@ namespace LYSL.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("LYSL.Data.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PetId")
+                        .IsUnique();
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("LYSL.Data.Models.Pet", b =>
                 {
                     b.Property<int>("Id")
@@ -109,25 +133,27 @@ namespace LYSL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Breed")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsNeutralized")
                         .HasColumnType("bit");
 
                     b.Property<string>("SerialNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -265,10 +291,19 @@ namespace LYSL.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("LYSL.Data.Models.Location", b =>
+                {
+                    b.HasOne("LYSL.Data.Models.Pet", "Pet")
+                        .WithOne("Location")
+                        .HasForeignKey("LYSL.Data.Models.Location", "PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LYSL.Data.Models.Pet", b =>
                 {
                     b.HasOne("LYSL.Data.Models.ApplicationUser", "User")
-                        .WithMany("Pets")
+                        .WithMany("Pet")
                         .HasForeignKey("UserId");
                 });
 

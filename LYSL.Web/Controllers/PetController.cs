@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using LYSL.Data.Models;
 using LYSL.Services;
-using LYSL.Services.PetService;
+using LYSL.Services.Petervice;
 using LYSL.Web.Models;
-using LYSL.Web.ViewModels.Pets;
+using LYSL.Web.ViewModels.Pet;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,18 +16,18 @@ namespace LYSL.Web.Controllers
     //[ApiController]
     public class PetController : Controller
     {
-        private readonly IPetService _pet;
+        private readonly IPetervice _pet;
         private readonly IMapper _mapper;
 
-        public PetController(IPetService pet, IMapper mapper)
+        public PetController(IPetervice pet, IMapper mapper)
         {
             _pet = pet;
             _mapper = mapper;
         }
 
-        public PetListViewModel GetAllPets()
+        public PetListViewModel GetAllPet()
         {
-            var petList = _pet.GetAllPets();
+            var petList = _pet.GetAllPet();
 
             return new PetListViewModel
             {
@@ -47,7 +47,7 @@ namespace LYSL.Web.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = GetAllPets();
+            var viewModel = GetAllPet();
             return View(viewModel);
         }
 
@@ -94,11 +94,20 @@ namespace LYSL.Web.Controllers
         }
 
         [HttpPost("/pet")]
-        public IActionResult CreatePet([FromBody] Pet pet)
+        public ActionResult<PetCreateDto> CreatePet([FromBody] PetCreateDto petCreateDto)
         {
-            var createdPet = _pet.CreatePet(pet);
+            var createdPet = _mapper.Map<Pet>(petCreateDto);
+            var result = _pet.CreatePet(createdPet);
 
-            return Ok(createdPet);
+            var readPet = _mapper.Map<PetViewModel>(result.Data);
+
+            //return Ok(createdPet);
+            return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
+        }
+
+        public IActionResult Create()
+        {
+            return View(new PetCreateDto());
         }
     }
 }

@@ -25,10 +25,10 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    Pets = user.Pets
+                    Pet = user.Pet
                 };
 
-                _db.ApplicationUsers.Add(newApplicationUser);
+                _db.ApplicationUser.Add(newApplicationUser);
                 _db.SaveChanges();
 
                 return new ServiceResponse<ApplicationUser>
@@ -53,12 +53,12 @@ namespace LYSL.Services.UserService
 
         public ApplicationUser GetUserById(int UserId)
         {
-            return _db.ApplicationUsers.Find(UserId);
+            return _db.ApplicationUser.Find(UserId);
         }
 
         public List<ApplicationUser> GetAllUsers()
         {
-            return _db.ApplicationUsers.ToList();
+            return _db.ApplicationUser.ToList();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace LYSL.Services.UserService
         {
             try
             {
-                _db.ApplicationUsers.Remove(user);
+                _db.ApplicationUser.Remove(user);
                 _db.SaveChanges();
 
                 return new ServiceResponse<ApplicationUser>
@@ -130,10 +130,10 @@ namespace LYSL.Services.UserService
                     //Id = UserId.Id,
                     LastName = user.LastName,
                     FirstName = user.FirstName,
-                    Pets = user.Pets
+                    Pet = user.Pet
                 };
 
-                _db.ApplicationUsers.Update(newApplicationUser);
+                _db.ApplicationUser.Update(newApplicationUser);
                 _db.SaveChanges();
 
                 return new ServiceResponse<ApplicationUser>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LYSL.Data.Migrations
 {
-    public partial class Initialmigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,15 +40,28 @@ namespace LYSL.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: true),
-                    UpdateOn = table.Column<DateTime>(nullable: true)
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UpdateOn = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Latitude = table.Column<string>(nullable: true),
+                    Longitude = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,23 +171,30 @@ namespace LYSL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pets",
+                name: "Pet",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Breed = table.Column<string>(nullable: true),
-                    Size = table.Column<int>(nullable: false),
+                    Breed = table.Column<string>(nullable: false),
+                    Weight = table.Column<decimal>(nullable: false),
                     Age = table.Column<int>(nullable: false),
                     IsNeutralized = table.Column<bool>(nullable: false),
-                    SerialNumber = table.Column<string>(nullable: true),
+                    SerialNumber = table.Column<string>(nullable: false),
+                    LocationId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pets", x => x.Id);
+                    table.PrimaryKey("PK_Pet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pets_AspNetUsers_UserId",
+                        name: "FK_Pet_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pet_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -221,8 +241,14 @@ namespace LYSL.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pets_UserId",
-                table: "Pets",
+                name: "IX_Pet_LocationId",
+                table: "Pet",
+                column: "LocationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pet_UserId",
+                table: "Pet",
                 column: "UserId");
         }
 
@@ -244,10 +270,13 @@ namespace LYSL.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Pets");
+                name: "Pet");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

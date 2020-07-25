@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LYSL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200718213108_add location class")]
-    partial class addlocationclass
+    [Migration("20200725212215_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,9 +48,6 @@ namespace LYSL.Data.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -90,9 +87,6 @@ namespace LYSL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId")
-                        .IsUnique();
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -106,7 +100,7 @@ namespace LYSL.Data.Migrations
 
             modelBuilder.Entity("LYSL.Data.Models.Location", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -117,7 +111,7 @@ namespace LYSL.Data.Migrations
                     b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Location");
                 });
@@ -133,25 +127,33 @@ namespace LYSL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Breed")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsNeutralized")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SerialNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -289,19 +291,16 @@ namespace LYSL.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LYSL.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("LYSL.Data.Models.Location", "Location")
-                        .WithOne("applicationUser")
-                        .HasForeignKey("LYSL.Data.Models.ApplicationUser", "LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LYSL.Data.Models.Pet", b =>
                 {
+                    b.HasOne("LYSL.Data.Models.Location", "Location")
+                        .WithOne("Pet")
+                        .HasForeignKey("LYSL.Data.Models.Pet", "LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LYSL.Data.Models.ApplicationUser", "User")
-                        .WithMany("Pets")
+                        .WithMany("Pet")
                         .HasForeignKey("UserId");
                 });
 

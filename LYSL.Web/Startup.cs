@@ -6,7 +6,7 @@ using LYSL.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using LYSL.Services.PetService;
+using LYSL.Services.Petervice;
 using LYSL.Web.Mapper;
 using AutoMapper;
 
@@ -31,7 +31,7 @@ namespace LYSL.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper(typeof(PetMapper));
-            services.AddScoped<IPetService, PetService>();
+            services.AddScoped<IPetervice, Petervice>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

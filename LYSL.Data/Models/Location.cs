@@ -13,6 +13,7 @@ namespace LYSL.Data.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 
-        public virtual Pet Pet { get; set; }
+        public int PetId { get; set; }
+        public Pet Pet { get; set; }
     }
 }

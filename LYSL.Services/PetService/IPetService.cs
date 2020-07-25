@@ -1,11 +1,11 @@
 ﻿using LYSL.Data.Models;
 using System.Collections.Generic;
 
-namespace LYSL.Services.PetService
+namespace LYSL.Services.Petervice
 {
-    public interface IPetService
+    public interface IPetervice
     {
-        List<Pet> GetAllPets();
+        List<Pet> GetAllPet();
         ServiceResponse<Pet> GetPetById(int id);
 
         ServiceResponse<Pet> DeletePet(Pet pet);
