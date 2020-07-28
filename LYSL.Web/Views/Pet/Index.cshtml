@@ -5,24 +5,76 @@
 }
 
 <h1>Pet in this Location</h1>
+<span class="btn-create-pet"><a asp-controller="Pet" asp-action="CreatePetPage" class="btn btn-info">Add Pet</a></span>
 
 <span>강아지 총 마릿수 : @Model.PetViewList.Count()</span>
-
 <br>
 
 @*LINQ*@
 
 @foreach (var pet in Model.PetViewList)
 {
-    <h3>@pet.Id</h3>
-    <ul>
-        <li>@pet.SerialNumber</li>
-        <li>@pet.Age</li>
-        <li>@pet.Location</li>
-        <li>@pet.Weight</li>
-        <li>@pet.Breed</li>
-        <li>@pet.IsNeutralized</li>
-        @*<li>@pet.Location.Latitude</li>*@
-        @*<li>@pet.Location.Longitude</li>*@
-    </ul>
+    <div class="pet-container" onclick="">
+        <div class="pet-card">
+            <div class="pet-header">
+                <h3>Pet No.@pet.Id</h3>
+                <span class="btn-detail"><a asp-controller="Pet" asp-action="GetPetById" asp-route-id="@pet.Id" class="btn btn-info">Detail</a></span>
+            </div>
+            <ul class="pet-item-list">
+                <li><span>Pet SN : </span>@pet.SerialNumber</li>
+                <li><span>Age : </span>@pet.Age</li>
+                <li><span>Location : </span>@pet.Location</li>
+                <li><span>Weight : </span>@pet.Weight</li>
+                <li><span>Breed : </span>@pet.Breed</li>
+                <li><span>Neutralized : </span>@pet.IsNeutralized</li>
+                @*<li>@pet.Location.Latitude</li>*@
+                @*<li>@pet.Location.Longitude</li>*@
+            </ul>
+        </div>
+    </div>
 }
+
+<style>
+    .pet-container {
+        display: flexbox;
+        flex-direction: column;    
+        max-width: 300px;
+        margin: 0;
+    }
+
+    .pet-card {
+        border: 1px grey solid;
+        border-radius: 4px;
+        margin : 10px;
+    }
+
+    .pet-header{
+        display: flex;
+        justify-content:space-between
+    }
+
+    .btn-detail{
+    }
+
+    .pet-header{
+        margin: 10px 20px;
+    }
+
+    li {
+        text-decoration: none;
+    }
+
+    h3 {
+        color: blue;
+    }
+
+    span {
+        font-weight: 500;
+    }
+
+    .btn-create-pet{
+        position:absolute;
+        top:80px;
+        left: 1100px;
+    }
+</style>

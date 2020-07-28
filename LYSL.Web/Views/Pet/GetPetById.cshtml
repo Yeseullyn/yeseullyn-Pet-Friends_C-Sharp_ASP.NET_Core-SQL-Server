@@ -5,9 +5,16 @@
 
 <h1>Pet Detail</h1>
 
+
 <ul>
     <li>Breed : @Model.Breed</li>
     <li>Age : @Model.Age</li>
+    <li>Is Neutrailized : @Model.IsNeutralized</li>
+    <li>Location : @Model.Location</li>
+    <li>Serial No. : @Model.SerialNumber</li>
+    <li>Weight : @Model.Weight</li>
 </ul>
 
-<button>Go back</button>
+<span><a asp-controller="Pet" asp-action="GetAllPet"  class="btn btn-info">Go Index</a></span>
+<span><a asp-controller="Pet" asp-action="DeletePetPage" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a></span>
+

@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
 using LYSL.Data.Models;
-using LYSL.Services;
 using LYSL.Services.Petervice;
-using LYSL.Web.Models;
 using LYSL.Web.ViewModels.Pet;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace LYSL.Web.Controllers
 {
@@ -25,7 +19,7 @@ namespace LYSL.Web.Controllers
             _mapper = mapper;
         }
 
-        public PetListViewModel GetAllPet()
+        public PetListViewModel GetAllPets()
         {
             var petList = _pet.GetAllPet();
 
@@ -47,18 +41,18 @@ namespace LYSL.Web.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = GetAllPet();
+            var viewModel = GetAllPets();
             return View(viewModel);
         }
 
         [HttpGet("/pet/{id}", Name = "GetPetById")]
-        public IActionResult GetPetById(int id)
+        public IActionResult GetPetById(PetViewModel model) // Id를 못받네?
         {
-            var pet = _pet.GetPetById(id).Data;
+            var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
 
             if (pet != null)
             {
-                var model = new PetViewModel
+                var viewModel = new PetViewModel
                 {
                     Id = pet.Id,
                     Age = pet.Age,
@@ -69,7 +63,7 @@ namespace LYSL.Web.Controllers
                     ApplicationUser = pet.User,
                     Location = pet.Location
                 };
-                return View(model);
+                return View(viewModel);
             }
             else
             {
@@ -77,12 +71,16 @@ namespace LYSL.Web.Controllers
             }
         }
 
-        [HttpDelete("/pet/{id}", Name = "DeletePetById")]
-        public IActionResult DeletePetById(int id)
+        //[HttpDelete("/pet/DeletePetById/{id}", Name = "DeletePetById")]
+        public ActionResult DeletePetById(PetViewModel model)
         {
-            var pet = _pet.DeletePetById(id);
+            if (model != null)
+            {
+                _pet.DeletePetById(model.Id);
+                return RedirectToAction("Index");
+            }
 
-            return Ok(pet);
+            return BadRequest();
         }
 
         [HttpPut("/pet/{id}", Name = "UpdatePetById")]
@@ -93,8 +91,17 @@ namespace LYSL.Web.Controllers
             return Ok(updatedPet);
         }
 
-        [HttpPost("/pet")]
-        public ActionResult<PetCreateDto> CreatePet([FromBody] PetCreateDto petCreateDto)
+        /// <summary>
+        /// 계속해서 FromBody로 해서 문제가 생겼던 것이었음
+        /// 415 Error는 media type 에러인데, 이건 endpoint에서 post 하는 타입이 Controller가 받을 수 있는 타입이
+        /// 아니라는 것을 의미함(바보멍충이). 그렇기 때문에 Postman을 이용하거나 Javascript JSON으로 POST 하는 경우
+        /// ([FromBody] ; 자바스트림트는 body에 데이터를 담아 전달하기 때문) Frombody가 맞지만 지금처럼 Razor로
+        /// ASP를 쓰는 경우에는 FromForm을 써야함
+        /// </summary>
+        /// <param name="petCreateDto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<PetCreateDto> CreatePet([FromForm] PetCreateDto petCreateDto)
         {
             var createdPet = _mapper.Map<Pet>(petCreateDto);
             var result = _pet.CreatePet(createdPet);
@@ -102,12 +109,39 @@ namespace LYSL.Web.Controllers
             var readPet = _mapper.Map<PetViewModel>(result.Data);
 
             //return Ok(createdPet);
-            return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
+            //왜 작동을 안하지?
+            //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
+            return RedirectToAction("GetPetById", "Pet", readPet); // 뭔가 이상하지만 일단 진행
         }
 
-        public IActionResult Create()
+        public IActionResult CreatePetPage(PetCreateDto model)
         {
-            return View(new PetCreateDto());
+            return View(model);
+        }
+
+        public IActionResult DeletePetPage(PetViewModel model)
+        {
+            var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
+
+            if (model != null)
+            {
+                var viewModel = new PetViewModel
+                {
+                    Id = pet.Id,
+                    Age = pet.Age,
+                    Breed = pet.Breed,
+                    Weight = pet.Weight,
+                    SerialNumber = pet.SerialNumber,
+                    IsNeutralized = pet.IsNeutralized,
+                    ApplicationUser = pet.User,
+                    Location = pet.Location
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

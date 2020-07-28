@@ -79,7 +79,6 @@ namespace LYSL.Services.Petervice
                     IsSuccess = false
                 }; ;
             }
-            
         }
 
         public List<Pet> GetAllPet()
@@ -119,7 +118,7 @@ namespace LYSL.Services.Petervice
             try
             {
                 var pet = GetPetById(id);
-                _db.Remove(pet);
+                _db.Remove(pet.Data);
                 _db.SaveChanges();
                 return new ServiceResponse<Pet>
                 {
