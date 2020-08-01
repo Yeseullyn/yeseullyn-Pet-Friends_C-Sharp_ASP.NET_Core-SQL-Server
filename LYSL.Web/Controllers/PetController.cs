@@ -19,13 +19,13 @@ namespace LYSL.Web.Controllers
             _mapper = mapper;
         }
 
-        public PetListViewModel GetAllPets()
+        public PetListDto GetAllPets()
         {
             var petList = _pet.GetAllPet();
 
-            return new PetListViewModel
+            return new PetListDto
             {
-                PetViewList = petList.Select(pet => new PetViewModel
+                PetViewList = petList.Select(pet => new PetDto
                 {
                     Id = pet.Id,
                     Age = pet.Age,
@@ -46,13 +46,13 @@ namespace LYSL.Web.Controllers
         }
 
         [HttpGet("/pet/{id}", Name = "GetPetById")]
-        public IActionResult GetPetById(PetViewModel model) // Id를 못받네?
+        public IActionResult GetPetById(int id) // Id를 못받네?
         {
-            var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
+            var pet = _pet.GetPetById(id).Data; // 그냥 타이포였던걸로..
 
             if (pet != null)
             {
-                var viewModel = new PetViewModel
+                var viewModel = new PetDto
                 {
                     Id = pet.Id,
                     Age = pet.Age,
@@ -72,7 +72,7 @@ namespace LYSL.Web.Controllers
         }
 
         //[HttpDelete("/pet/DeletePetById/{id}", Name = "DeletePetById")]
-        public ActionResult DeletePetById(PetViewModel model)
+        public ActionResult DeletePetById(PetDto model)
         {
             if (model != null)
             {
@@ -106,10 +106,23 @@ namespace LYSL.Web.Controllers
             var createdPet = _mapper.Map<Pet>(petCreateDto);
             var result = _pet.CreatePet(createdPet);
 
-            var readPet = _mapper.Map<PetViewModel>(result.Data);
+            var readPet = _mapper.Map<PetDto>(result.Data);
 
             //return Ok(createdPet);
             //왜 작동을 안하지?
+            //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
+            return RedirectToAction("GetPetById", "Pet", readPet); // 뭔가 이상하지만 일단 진행
+        }
+
+        [HttpPost]
+        public ActionResult<PetUpdateDto> UpdatePet(PetUpdateDto model)
+        {
+            var updatedPet = _mapper.Map<Pet>(model);   
+            var result = _pet.UpdatePet(updatedPet);
+
+            var readPet = _mapper.Map<PetDto>(result.Data);
+
+            //return Ok(createdPet);
             //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
             return RedirectToAction("GetPetById", "Pet", readPet); // 뭔가 이상하지만 일단 진행
         }
@@ -119,13 +132,29 @@ namespace LYSL.Web.Controllers
             return View(model);
         }
 
-        public IActionResult DeletePetPage(PetViewModel model)
+        public IActionResult UpdatePetPage(PetUpdateDto model)
+        {
+            var dto = _pet.GetPetById(model.Id).Data;
+            var updateDto = new PetUpdateDto()
+            {
+                Id = dto.Id,
+                Age = dto.Age,
+                Breed = dto.Breed,
+                IsNeutralized = dto.IsNeutralized,
+                SerialNumber = dto.SerialNumber,
+                Weight = dto.Weight
+            };
+
+            return View(updateDto);
+        }
+
+        public IActionResult DeletePet(PetDto model)
         {
             var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
 
             if (model != null)
             {
-                var viewModel = new PetViewModel
+                var viewModel = new PetDto
                 {
                     Id = pet.Id,
                     Age = pet.Age,

@@ -1,4 +1,4 @@
-﻿@model LYSL.Web.ViewModels.Pet.PetViewModel
+﻿@model LYSL.Web.ViewModels.Pet.PetDto
 @{
     ViewData["Title"] = "GetPetById";
 }
@@ -19,5 +19,6 @@
     <input type="submit" value="Delete" class="btn btn-danger" />
     @*<a asp-controller="Pet" asp-action="GetAllPet" class="btn btn-info">Go Index</a>*@
     <a asp-action="Index" class="btn btn-info">Back to List</a>
+    <a asp-action="UpdatePetPage" asp-route-id="@Model.Id" class="btn btn-info">Edit</a>
 </form>
 

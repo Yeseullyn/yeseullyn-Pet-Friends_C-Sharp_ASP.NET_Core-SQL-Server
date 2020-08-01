@@ -8,8 +8,9 @@ namespace LYSL.Web.Mapper
     {
         public PetMapper()
         {
-            CreateMap<Pet, PetViewModel>().ReverseMap();
+            CreateMap<Pet, PetDto>().ReverseMap();
             CreateMap<PetCreateDto, Pet>();
+            CreateMap<PetUpdateDto, Pet>();
         }
 
         //public int Id { get; set; }

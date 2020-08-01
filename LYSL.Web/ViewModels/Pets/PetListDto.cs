@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace LYSL.Web.ViewModels.Pet
 {
-    public class PetListViewModel
+    public class PetListDto
     {
-        public IEnumerable<PetViewModel> PetViewList { get; set; }
+        public IEnumerable<PetDto> PetViewList { get; set; }
     }
 }

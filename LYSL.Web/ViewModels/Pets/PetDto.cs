@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LYSL.Web.ViewModels.Pet
 {
-    public class PetViewModel
+    public class PetDto
     {
         public int Id { get; set; }
         public string Breed { get; set; }

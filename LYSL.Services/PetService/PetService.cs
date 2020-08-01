@@ -146,7 +146,7 @@ namespace LYSL.Services.Petervice
             {
                 var newPet = new Pet
                 {
-                    //Id = pet.Id,
+                    Id = pet.Id,
                     Age = pet.Age,
                     Breed = pet.Breed,
                     IsNeutralized = pet.IsNeutralized,
