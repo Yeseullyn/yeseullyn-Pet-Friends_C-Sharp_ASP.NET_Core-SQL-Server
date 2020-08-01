@@ -121,7 +121,24 @@ namespace LYSL.Web.Controllers
             var result = _pet.UpdatePet(updatedPet);
 
             var readPet = _mapper.Map<PetDto>(result.Data);
+            //return Ok(createdPet);
+            //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
+            return RedirectToAction("GetPetById", "Pet", readPet); // 뭔가 이상하지만 일단 진행
+        }
 
+        [HttpPost]
+        public ActionResult<PetUpdateDto> UpdateLocation(PetUpdateDto model)
+        {
+            var petDto = _pet.GetPetById(model.Id).Data;
+            var updatedPet = _mapper.Map<Pet>(petDto);
+
+            updatedPet.Location = model.Location;
+            updatedPet.Location.Pet = petDto;
+            
+            var result = _pet.UpdateLocation(updatedPet.Location);
+
+
+            var readPet = _mapper.Map<PetDto>(result.Data.Pet);
             //return Ok(createdPet);
             //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
             return RedirectToAction("GetPetById", "Pet", readPet); // 뭔가 이상하지만 일단 진행
@@ -142,7 +159,8 @@ namespace LYSL.Web.Controllers
                 Breed = dto.Breed,
                 IsNeutralized = dto.IsNeutralized,
                 SerialNumber = dto.SerialNumber,
-                Weight = dto.Weight
+                Weight = dto.Weight,
+                Location = dto.Location
             };
 
             return View(updateDto);

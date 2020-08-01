@@ -23,7 +23,7 @@ namespace LYSL.Data.Models
         [Required]
         public string SerialNumber { get; set; }
 
-        public Location Location { get; set; }
+        public virtual Location Location { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
 }

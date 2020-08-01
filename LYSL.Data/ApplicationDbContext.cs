@@ -17,6 +17,7 @@ namespace LYSL.Web.Data
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Pet> Pet { get; set; }
+        public DbSet<Location> Location { get; set; }
         //Location DB 셋 추가해주세요
     }
 }

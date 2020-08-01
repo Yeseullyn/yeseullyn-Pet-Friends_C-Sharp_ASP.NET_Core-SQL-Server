@@ -12,5 +12,6 @@ namespace LYSL.Services.Petervice
         ServiceResponse<Pet> DeletePetById(int id);
         ServiceResponse<Pet> CreatePet(Pet pet);
         ServiceResponse<Pet> UpdatePet(Pet pet);
+        ServiceResponse<Location> UpdateLocation(Location location);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LYSL.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace LYSL.Web.ViewModels.Pet
 {
@@ -10,5 +11,7 @@ namespace LYSL.Web.ViewModels.Pet
         public int Age { get; set; }
         public bool IsNeutralized { get; set; }
         public string SerialNumber { get; set; }
+
+        public Location Location { get; set; }
     }
 }

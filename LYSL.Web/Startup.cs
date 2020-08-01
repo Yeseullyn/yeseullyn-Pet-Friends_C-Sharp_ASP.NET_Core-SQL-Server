@@ -67,7 +67,7 @@ namespace LYSL.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Pet}/{action=Index}");
                 endpoints.MapRazorPages();
             });
         }

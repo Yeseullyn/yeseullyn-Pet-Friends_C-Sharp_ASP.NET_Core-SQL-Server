@@ -13,6 +13,14 @@
     <li>Location : @Model.Location</li>
     <li>Serial No. : @Model.SerialNumber</li>
     <li>Weight : @Model.Weight</li>
+    <li>Location</li>
+    <ul>
+        @if(Model.Location != null)
+        {
+            <li>Latitude: @Model.Location.Latitude</li>
+            <li>Longitude: @Model.Location.Longitude</li>
+        }
+    </ul>
 </ul>
 
 <form asp-controller="pet" asp-action="DeletePetById" asp-route-id="@Model.Id">
@@ -21,4 +29,66 @@
     <a asp-action="Index" class="btn btn-info">Back to List</a>
     <a asp-action="UpdatePetPage" asp-route-id="@Model.Id" class="btn btn-info">Edit</a>
 </form>
+
+<br />
+<h1>Update Location Data</h1>
+<form asp-controller="Pet" asp-action="UpdateLocation" asp-route-id="@Model.Id" method="post">
+    <div class="form-group">
+        <label asp-for="Location.Longitude" class="control-label"></label>
+        <input id="longitude" asp-for="Location.Longitude" class="form-control" />
+        @*<span asp-validation-for="Breed" class="text-danger"></span>*@
+    </div>
+    <div class="form-group">
+        <label asp-for="Location.Latitude" class="control-label"></label>
+        <input id="latitude" asp-for="Location.Latitude" class="form-control" />
+        @*<span asp-validation-for="Weight" class="text-danger"></span>*@
+    </div>
+    <button type="submit" class="btn-info">Submit</button>
+</form>
+
+<br />
+<h3>My Google Maps Demo</h3>
+<!--The div element for the map -->
+<div id="map"></div>
+<script>
+    // Initialize and add the map
+    function initMap() {
+        // The location of currentLocation
+        navigator.geolocation.getCurrentPosition(function (pos) {
+            latitude = pos.coords.latitude;
+            longitude = pos.coords.longitude;
+
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+
+            var currentLocation = { lat: latitude, lng: longitude };
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: currentLocation,
+            });
+            var marker = new google.maps.Marker({
+                position: currentLocation,
+                map: map,
+            });
+        });
+    }
+
+
+
+</script>
+<style>
+
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<!--Load the API from the specified URL
+* The async attribute allows the browser to render the page while the API loads
+* The key parameter will contain your own API key (which is not needed for this tutorial)
+* The callback parameter executes the initMap() function
+-->
+<script async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG4fZ-BI9wUVvShsyDMDkql08o4WTYfnQ&callback=initMap"></script>
 

@@ -58,7 +58,8 @@ namespace LYSL.Services.Petervice
         public ServiceResponse<Pet> GetPetById(int id) 
         {
             var pet = _db.Pet.Find(id);
-
+            var location = _db.Location.FirstOrDefault(x => x.PetId == id);
+            pet.Location = location;
             try
             {
                 return new ServiceResponse<Pet>
@@ -152,7 +153,8 @@ namespace LYSL.Services.Petervice
                     IsNeutralized = pet.IsNeutralized,
                     SerialNumber = pet.SerialNumber,
                     Weight = pet.Weight,
-                    User = pet.User
+                    User = pet.User,
+                    Location = pet.Location
                 };
 
                 _db.Pet.Update(newPet);
@@ -173,6 +175,33 @@ namespace LYSL.Services.Petervice
                     Data = pet,
                     Time = DateTime.UtcNow,
                     Messsage = "Error in updating pet",
+                    IsSuccess = false
+                };
+            }
+        }
+
+        public ServiceResponse<Location> UpdateLocation(Location location)
+        {
+            try
+            {
+                _db.Location.Update(location);
+                _db.SaveChanges();
+
+                return new ServiceResponse<Location>
+                {
+                    Data = location,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Location updated",
+                    IsSuccess = true
+                };
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<Location>
+                {
+                    Data = location,
+                    Time = DateTime.UtcNow,
+                    Messsage = "Error in updating location",
                     IsSuccess = false
                 };
             }
