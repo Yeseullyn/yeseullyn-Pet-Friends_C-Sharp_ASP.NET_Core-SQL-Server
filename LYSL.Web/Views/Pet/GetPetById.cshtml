@@ -15,6 +15,9 @@
     <li>Weight : @Model.Weight</li>
 </ul>
 
-<span><a asp-controller="Pet" asp-action="GetAllPet"  class="btn btn-info">Go Index</a></span>
-<span><a asp-controller="Pet" asp-action="DeletePetPage" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a></span>
+<form asp-controller="pet" asp-action="DeletePetById" asp-route-id="@Model.Id">
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    @*<a asp-controller="Pet" asp-action="GetAllPet" class="btn btn-info">Go Index</a>*@
+    <a asp-action="Index" class="btn btn-info">Back to List</a>
+</form>
 
