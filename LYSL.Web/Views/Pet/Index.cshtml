@@ -21,12 +21,12 @@
                 <span class="btn-detail"><a asp-controller="Pet" asp-action="GetPetById" asp-route-id="@pet.Id" class="btn btn-info">Detail</a></span>
             </div>
             <ul class="pet-item-list">
-                <li><span>Pet SN : </span>@pet.SerialNumber</li>
-                <li><span>Age : </span>@pet.Age</li>
-                <li><span>Location : </span>@pet.Location</li>
-                <li><span>Weight : </span>@pet.Weight</li>
                 <li><span>Breed : </span>@pet.Breed</li>
+                <li><span>Age : </span>@pet.Age</li>
+                <li><span>Weight : </span>@pet.Weight</li>
                 <li><span>Neutralized : </span>@pet.IsNeutralized</li>
+                <li><span>Pet SN : </span>@pet.SerialNumber</li>
+                <li><span>Location : </span>@pet.Location</li>
                 @*<li>@pet.Location.Latitude</li>*@
                 @*<li>@pet.Location.Longitude</li>*@
             </ul>
