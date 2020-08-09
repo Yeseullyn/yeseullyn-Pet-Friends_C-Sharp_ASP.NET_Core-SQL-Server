@@ -5,76 +5,93 @@
 }
 
 <h1>Pet in this Location</h1>
+<span>강아지 총 마릿수 : @Model.PetViewList.Count()</span>
 <span class="btn-create-pet"><a asp-controller="Pet" asp-action="CreatePetPage" class="btn btn-info">Add Pet</a></span>
 
-<span>강아지 총 마릿수 : @Model.PetViewList.Count()</span>
 <br>
+<br />
+<div id="map" style="height: 400px; width: 1000px;"></div>
 
-@*LINQ*@
 
-@foreach (var pet in Model.PetViewList)
-{
-    <div class="pet-container" onclick="">
-        <div class="pet-card">
-            <div class="pet-header">
-                <h3>Pet No.@pet.Id</h3>
-                <span class="btn-detail"><a asp-controller="Pet" asp-action="GetPetById" asp-route-id="@pet.Id" class="btn btn-info">Detail</a></span>
-            </div>
-            <ul class="pet-item-list">
-                <li><span>Breed : </span>@pet.Breed</li>
-                <li><span>Age : </span>@pet.Age</li>
-                <li><span>Weight : </span>@pet.Weight</li>
-                <li><span>Neutralized : </span>@pet.IsNeutralized</li>
-                <li><span>Pet SN : </span>@pet.SerialNumber</li>
-                <li><span>Location : </span>@pet.Location</li>
-                @*<li>@pet.Location.Latitude</li>*@
-                @*<li>@pet.Location.Longitude</li>*@
-            </ul>
-        </div>
-    </div>
-}
+<script type="text/javascript">
 
-<style>
-    .pet-container {
-        display: flexbox;
-        flex-direction: column;    
-        max-width: 300px;
-        margin: 0;
+        navigator.geolocation.getCurrentPosition(initMap);
+
+    function initMap(position) {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+        });
+        
+        if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(initialLocation);
+            });
+        }
+
+        setMarkers(map);
     }
 
-    .pet-card {
-        border: 1px grey solid;
-        border-radius: 4px;
-        margin : 10px;
+    // Data for the markers consisting of a name, a LatLng and a zIndex for the
+    // order in which these markers should display on top of each other.
+
+     var locations = []
+    @foreach(var item in @Model.PetViewList)
+    {
+        if (item.Location != null)
+        {
+            <text>
+    locations.push(['@item.Breed', @item.Location.Latitude, @item.Location.Longitude, @item.Id]);
+                
+            </text>
+        }
     }
 
-    .pet-header{
-        display: flex;
-        justify-content:space-between
+
+    function setMarkers(map) {
+        // Adds markers to the map.
+
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+            url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(20, 32),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 32)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+            coords: [1, 1, 1, 20, 18, 20, 18, 1],
+            type: 'poly'
+        };
+        for (var i = 0; i < locations.length; i++) {
+            var location = locations[i];
+            var marker = new google.maps.Marker({
+                position: { lat: location[1], lng: location[2] },
+                map: map,
+                icon: image,
+                shape: shape,
+                title: location[0],
+                zIndex: location[3],
+                url: "/pet/" + location[3]
+            });
+        google.maps.event.addListener(marker, 'click', function () {
+            window.location.href = this.url;
+        });
+        }
     }
 
-    .btn-detail{
-    }
 
-    .pet-header{
-        margin: 10px 20px;
-    }
+</script>
 
-    li {
-        text-decoration: none;
-    }
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG4fZ-BI9wUVvShsyDMDkql08o4WTYfnQ&callback=initMap"></script>
 
-    h3 {
-        color: blue;
-    }
-
-    span {
-        font-weight: 500;
-    }
-
-    .btn-create-pet{
-        position:absolute;
-        top:80px;
-        left: 1100px;
-    }
-</style>

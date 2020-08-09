@@ -3,6 +3,7 @@ using LYSL.Data.Models;
 using LYSL.Services.Petervice;
 using LYSL.Web.ViewModels.Pet;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Linq;
 
 namespace LYSL.Web.Controllers
@@ -42,17 +43,19 @@ namespace LYSL.Web.Controllers
         public IActionResult Index()
         {
             var viewModel = GetAllPets();
+            //var serializer = JsonConvert.SerializeObject(viewModel);
             return View(viewModel);
         }
 
         [HttpGet("/pet/{id}", Name = "GetPetById")]
-        public IActionResult GetPetById(int id) // Id를 못받네?
+        public IActionResult GetPetById(int id)
         {
-            var pet = _pet.GetPetById(id).Data; // 그냥 타이포였던걸로..
+            
+            var pet = _pet.GetPetById(id).Data;
 
             if (pet != null)
             {
-                var viewModel = new PetDto
+                var petDto = new PetDto
                 {
                     Id = pet.Id,
                     Age = pet.Age,
@@ -63,16 +66,15 @@ namespace LYSL.Web.Controllers
                     ApplicationUser = pet.User,
                     Location = pet.Location
                 };
-                return View(viewModel);
+                return View(petDto);
             }
             else
             {
-                return BadRequest();
+                return NotFound("Pet ID not found.");
             }
         }
 
-        //[HttpDelete("/pet/DeletePetById/{id}", Name = "DeletePetById")]
-        public ActionResult DeletePetById(PetDto model)
+        public ActionResult DeletePet(PetDto model) //Argument
         {
             if (model != null)
             {
@@ -80,7 +82,7 @@ namespace LYSL.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return BadRequest();
+            return NotFound("Pet ID not found.");
         }
 
         [HttpPut("/pet/{id}", Name = "UpdatePetById")]
@@ -136,8 +138,6 @@ namespace LYSL.Web.Controllers
             updatedPet.Location.Pet = petDto;
             
             var result = _pet.UpdateLocation(updatedPet.Location);
-
-
             var readPet = _mapper.Map<PetDto>(result.Data.Pet);
             //return Ok(createdPet);
             //return CreatedAtRoute(nameof(GetPetById), new { Id = readPet.Id }, readPet);
@@ -166,29 +166,29 @@ namespace LYSL.Web.Controllers
             return View(updateDto);
         }
 
-        public IActionResult DeletePet(PetDto model)
-        {
-            var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
+        //public IActionResult DeletePet(PetDto model)
+        //{
+        //    var pet = _pet.GetPetById(model.Id).Data; // 그냥 타이포였던걸로..
 
-            if (model != null)
-            {
-                var viewModel = new PetDto
-                {
-                    Id = pet.Id,
-                    Age = pet.Age,
-                    Breed = pet.Breed,
-                    Weight = pet.Weight,
-                    SerialNumber = pet.SerialNumber,
-                    IsNeutralized = pet.IsNeutralized,
-                    ApplicationUser = pet.User,
-                    Location = pet.Location
-                };
-                return View(viewModel);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
+        //    if (model != null)
+        //    {
+        //        var viewModel = new PetDto
+        //        {
+        //            Id = pet.Id,
+        //            Age = pet.Age,
+        //            Breed = pet.Breed,
+        //            Weight = pet.Weight,
+        //            SerialNumber = pet.SerialNumber,
+        //            IsNeutralized = pet.IsNeutralized,
+        //            ApplicationUser = pet.User,
+        //            Location = pet.Location
+        //        };
+        //        return View(viewModel);
+        //    }
+        //    else
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
     }
 }

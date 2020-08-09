@@ -1,5 +1,6 @@
 ﻿using LYSL.Data.Models;
 using LYSL.Web.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,11 +58,17 @@ namespace LYSL.Services.Petervice
 
         public ServiceResponse<Pet> GetPetById(int id) 
         {
+
             var pet = _db.Pet.Find(id);
             var location = _db.Location.FirstOrDefault(x => x.PetId == id);
-            pet.Location = location;
+
             try
             {
+                if (pet != null)
+                {
+                    pet.Location = location;
+                }
+
                 return new ServiceResponse<Pet>
                 {
                     Data = pet,
@@ -69,6 +76,7 @@ namespace LYSL.Services.Petervice
                     Messsage = "Get pet data success.",
                     IsSuccess = false
                 };
+
             }
             catch (Exception e)
             {
@@ -84,7 +92,7 @@ namespace LYSL.Services.Petervice
 
         public List<Pet> GetAllPet()
         {
-            return _db.Pet.ToList();
+            return _db.Pet.Include(pet => pet.Location).ToList();
         }
 
         public ServiceResponse<Pet> DeletePet(Pet pet)
